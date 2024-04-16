@@ -2,6 +2,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { t } from "@lingui/macro";
 import { defaultExperience, experienceSchema } from "@reactive-resume/schema";
 import {
+  Label,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@reactive-resume/ui";
+import {
   FormControl,
   FormField,
   FormItem,
@@ -101,6 +109,63 @@ export const ExperienceDialog = () => {
               <FormControl>
                 <URLInput {...field} />
               </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          name="workType"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem className="sm:col-span-1">
+              <Label>{t`Work Type`}</Label>
+              <Select
+                value={field.value}
+                onValueChange={(value) => {
+                  field.onChange({ target: { value: value === "_default_" ? "" : value } });
+                }}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder={t`Work Type`} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="_default_">{t`None`}</SelectItem>
+                  <SelectItem value="part_time">{t`Part Time`}</SelectItem>
+                  <SelectItem value="full_time">{t`Full Time`}</SelectItem>
+                  <SelectItem value="contract">{t`Contract`}</SelectItem>
+                  <SelectItem value="internship">{t`Internship`}</SelectItem>
+                </SelectContent>
+              </Select>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          name="jobType"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem className="sm:col-span-1">
+              <Label>{t`Job Type`}</Label>
+              <Select
+                value={field.value}
+                onValueChange={(value) => {
+                  field.onChange({ target: { value: value === "_default_" ? "" : value } });
+                }}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder={t`Job Type`} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="_default_">{t`None`}</SelectItem>
+                  <SelectItem value="remote">{t`Remote`}</SelectItem>
+                  <SelectItem value="hybrid">{t`Hybrid`}</SelectItem>
+                  <SelectItem value="on_site">{t`On Site`}</SelectItem>
+                </SelectContent>
+              </Select>
+
               <FormMessage />
             </FormItem>
           )}

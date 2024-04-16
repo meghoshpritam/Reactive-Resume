@@ -10,6 +10,8 @@ export const experienceSchema = itemSchema.extend({
   date: z.string(),
   summary: z.string(),
   url: urlSchema,
+  workType: z.string().optional(),
+  jobType: z.string().optional(),
 });
 
 // Type
@@ -24,4 +26,6 @@ export const defaultExperience: Experience = {
   date: "",
   summary: "",
   url: defaultUrl,
+  workType: "",
+  jobType: "",
 };
