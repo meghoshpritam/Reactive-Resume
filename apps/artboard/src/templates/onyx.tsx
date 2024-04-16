@@ -31,21 +31,13 @@ const Header = () => {
 
   return (
     <div className="flex items-center justify-between space-x-4 border-b border-primary pb-5">
-      <Picture />
-
       <div className="flex-1 space-y-2">
         <div>
-          <div className="text-2xl font-bold">{basics.name}</div>
-          <div className="text-base">{basics.headline}</div>
+          <div className="text-3xl font-bold">{basics.name}</div>
+          <div className="text-lg text-primary">{basics.headline}</div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-sm">
-          {basics.location && (
-            <div className="flex items-center gap-x-1.5">
-              <i className="ph ph-bold ph-map-pin text-primary" />
-              <div>{basics.location}</div>
-            </div>
-          )}
+        <div className="grid grid-cols-2 items-center gap-x-5 gap-y-1.5 text-sm">
           {basics.phone && (
             <div className="flex items-center gap-x-1.5">
               <i className="ph ph-bold ph-phone text-primary" />
@@ -84,6 +76,12 @@ const Header = () => {
               )}
             </div>
           ))}
+          {basics.location && (
+            <div className="flex items-center gap-x-1.5">
+              <i className="ph ph-bold ph-map-pin text-primary" />
+              <div>{basics.location}</div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -114,6 +112,8 @@ const Header = () => {
             ))}
         </div>
       )}
+
+      <Picture />
     </div>
   );
 };
