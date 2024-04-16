@@ -18,6 +18,7 @@ import {
   Input,
   RichInput,
 } from "@reactive-resume/ui";
+import { experienceJobTypes, experienceWorkTypes } from "@reactive-resume/utils";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -25,7 +26,6 @@ import { AiActions } from "@/client/components/ai-actions";
 
 import { SectionDialog } from "../sections/shared/section-dialog";
 import { URLInput } from "../sections/shared/url-input";
-
 const formSchema = experienceSchema;
 
 type FormValues = z.infer<typeof formSchema>;
@@ -131,10 +131,11 @@ export const ExperienceDialog = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="_default_">{t`None`}</SelectItem>
-                  <SelectItem value="part_time">{t`Part Time`}</SelectItem>
-                  <SelectItem value="full_time">{t`Full Time`}</SelectItem>
-                  <SelectItem value="contract">{t`Contract`}</SelectItem>
-                  <SelectItem value="internship">{t`Internship`}</SelectItem>
+                  {Object.entries(experienceWorkTypes).map(([key, value]) => (
+                    <SelectItem key={key} value={key}>
+                      {value}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
 
@@ -160,9 +161,11 @@ export const ExperienceDialog = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="_default_">{t`None`}</SelectItem>
-                  <SelectItem value="remote">{t`Remote`}</SelectItem>
-                  <SelectItem value="hybrid">{t`Hybrid`}</SelectItem>
-                  <SelectItem value="on_site">{t`On Site`}</SelectItem>
+                  {Object.entries(experienceJobTypes).map(([key, value]) => (
+                    <SelectItem key={key} value={key}>
+                      {value}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
 

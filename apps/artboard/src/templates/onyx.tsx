@@ -16,7 +16,15 @@ import {
   URL,
   Volunteer,
 } from "@reactive-resume/schema";
-import { cn, isEmptyString, isUrl } from "@reactive-resume/utils";
+import {
+  cn,
+  ExperienceJobTypes,
+  experienceJobTypes,
+  ExperienceWorkTypes,
+  experienceWorkTypes,
+  isEmptyString,
+  isUrl,
+} from "@reactive-resume/utils";
 import get from "lodash.get";
 import React, { Fragment } from "react";
 
@@ -239,17 +247,35 @@ const Experience = () => {
   const section = useArtboardStore((state) => state.resume.sections.experience);
 
   return (
-    <Section<Experience> section={section} urlKey="url" summaryKey="summary">
+    <Section<Experience> section={section} summaryKey="summary">
       {(item) => (
         <div className="flex items-start justify-between">
           <div className="text-left">
-            <div className="font-bold">{item.company}</div>
-            <div>{item.position}</div>
+            <div className="font-bold">{item.position}</div>
+            <div>{item.company}</div>
+            <div className="mt-1 flex items-center text-sm">
+              {item.jobType && (
+                <div>{experienceJobTypes[item.jobType as keyof ExperienceJobTypes]}</div>
+              )}
+              {item.jobType && item.workType && <div className="mx-1.5">|</div>}
+              {item.workType && (
+                <div>{experienceWorkTypes[item.workType as keyof ExperienceWorkTypes]}</div>
+              )}
+
+              {(item.jobType || item.workType) && isUrl(item?.url?.href) && (
+                <div className="mx-1.5">|</div>
+              )}
+              <Link url={item.url} />
+            </div>
           </div>
 
           <div className="shrink-0 text-right">
-            <div className="font-bold">{item.date}</div>
-            <div>{item.location}</div>
+            <div className="mb-1 font-bold">{item.date}</div>
+            {item.location && (
+              <div>
+                <i className="ph ph-bold ph-map-pin text-primary" /> {item.location}
+              </div>
+            )}
           </div>
         </div>
       )}
