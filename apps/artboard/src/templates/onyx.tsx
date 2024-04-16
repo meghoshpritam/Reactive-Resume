@@ -298,6 +298,11 @@ const Education = () => {
 
           <div className="shrink-0 text-right">
             <div className="font-bold">{item.date}</div>
+            {item.location && (
+              <div>
+                <i className="ph ph-bold ph-map-pin text-primary" /> {item.location}
+              </div>
+            )}
             <div>{item.studyType}</div>
           </div>
         </div>
