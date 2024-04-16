@@ -40,7 +40,7 @@ export const BuilderLayout = () => {
       <div className="relative size-full overflow-hidden">
         <PanelGroup direction="horizontal">
           <Panel
-            minSize={25}
+            minSize={3}
             maxSize={45}
             defaultSize={30}
             onResize={leftSetSize}
@@ -60,7 +60,7 @@ export const BuilderLayout = () => {
             onDragging={rightHandle.setDragging}
           />
           <Panel
-            minSize={25}
+            minSize={3}
             maxSize={45}
             defaultSize={30}
             onResize={rightSetSize}
