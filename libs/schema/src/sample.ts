@@ -91,6 +91,7 @@ export const sampleResume: ResumeData = {
             label: "",
             href: "",
           },
+          location: "Berkeley, CA",
         },
       ],
     },

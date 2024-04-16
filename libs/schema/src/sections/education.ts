@@ -11,7 +11,7 @@ export const educationSchema = itemSchema.extend({
   date: z.string(),
   summary: z.string(),
   url: urlSchema,
-  location: z.string(),
+  location: z.string().optional(),
 });
 
 // Type

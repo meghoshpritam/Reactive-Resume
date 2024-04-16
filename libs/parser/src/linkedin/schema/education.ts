@@ -7,5 +7,5 @@ export const educationSchema = z.object({
   Notes: z.string().optional(),
   "Degree Name": z.string(),
   Activities: z.string(),
-  location: z.string(),
+  location: z.string().optional(),
 });
