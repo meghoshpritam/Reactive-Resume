@@ -49,7 +49,11 @@ const Header = () => {
           {basics.phone && (
             <div className="flex items-center gap-x-1.5">
               <i className="ph ph-bold ph-phone text-primary" />
-              <a href={`tel:${basics.phone}`} target="_blank" rel="noreferrer">
+              <a
+                href={`tel:${basics.phone.replace(/[^0-9+]/g, "")}`}
+                target="_blank"
+                rel="noreferrer"
+              >
                 {basics.phone}
               </a>
             </div>
@@ -66,7 +70,18 @@ const Header = () => {
           {basics.customFields.map((item) => (
             <div key={item.id} className="flex items-center gap-x-1.5">
               <i className={cn(`ph ph-bold ph-${item.icon}`, "text-primary")} />
-              <span>{[item.name, item.value].filter(Boolean).join(": ")}</span>
+              {item.value.match(/^https?:\/\//) ? (
+                <a
+                  href={item.value}
+                  target="_blank"
+                  rel="noreferrer noopener nofollow"
+                  className={"inline-block"}
+                >
+                  {item.name}
+                </a>
+              ) : (
+                <span>{[item.name, item.value].filter(Boolean).join(": ")}</span>
+              )}
             </div>
           ))}
         </div>

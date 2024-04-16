@@ -40,9 +40,14 @@ export const CustomField = ({ field, onChange, onRemove }: CustomFieldProps) => 
         </Button>
 
         <Input
+          placeholder={t`Icon`}
+          value={field.icon}
+          className="!ml-0"
+          onChange={(event) => handleChange("icon", event.target.value)}
+        />
+        <Input
           placeholder={t`Name`}
           value={field.name}
-          className="!ml-0"
           onChange={(event) => handleChange("name", event.target.value)}
         />
 
