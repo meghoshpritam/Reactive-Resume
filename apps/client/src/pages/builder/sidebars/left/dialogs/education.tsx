@@ -131,6 +131,20 @@ export const EducationDialog = () => {
         />
 
         <FormField
+          name="location"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem className="sm:col-span-2">
+              <FormLabel>{t`Location`}</FormLabel>
+              <FormControl>
+                <Input {...field} placeholder={t`United States`} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
           name="summary"
           control={form.control}
           render={({ field }) => (

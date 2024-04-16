@@ -11,6 +11,7 @@ export const educationSchema = itemSchema.extend({
   date: z.string(),
   summary: z.string(),
   url: urlSchema,
+  location: z.string(),
 });
 
 // Type
@@ -27,4 +28,5 @@ export const defaultEducation: Education = {
   date: "",
   summary: "",
   url: defaultUrl,
+  location: "",
 };
