@@ -7,7 +7,7 @@ interface Skill {
   id: string;
 }
 
-export const getSkillsByGroup = (skills = []) => {
+export const getSkillsByGroup = (skills: Skill[] = []) => {
   const groupSkills: { [key: string]: Skill[] } = {};
 
   for (const skill of skills as Skill[]) {
@@ -21,7 +21,7 @@ export const getSkillsByGroup = (skills = []) => {
   }
 
   return Object.entries(groupSkills).map(([group, skills]) => ({
-    group,
+    group: group === "_default_" ? "" : group,
     skills,
   }));
 };

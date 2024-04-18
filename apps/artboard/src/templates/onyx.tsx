@@ -12,7 +12,6 @@ import {
   Reference,
   SectionKey,
   SectionWithItem,
-  Skill,
   URL,
   Volunteer,
 } from "@reactive-resume/schema";
@@ -22,6 +21,7 @@ import {
   experienceJobTypes,
   ExperienceWorkTypes,
   experienceWorkTypes,
+  getSkillsByGroup,
   isEmptyString,
   isUrl,
 } from "@reactive-resume/utils";
@@ -192,6 +192,32 @@ type SectionProps<T> = {
   keywordsKey?: keyof T;
 };
 
+type SectionContainerProps = {
+  children: React.ReactNode;
+  sectionId: string;
+  sectionName: string;
+  sectionColumns: number;
+};
+
+const SectionContainer = ({
+  sectionId,
+  children,
+  sectionName,
+  sectionColumns,
+}: SectionContainerProps) => {
+  return (
+    <section id={sectionId} className="grid">
+      <h4 className="font-bold text-primary">{sectionName}</h4>
+
+      <div
+        className="grid gap-x-6 gap-y-3"
+        style={{ gridTemplateColumns: `repeat(${sectionColumns}, 1fr)` }}
+      >
+        {children}
+      </div>
+    </section>
+  );
+};
 const Section = <T,>({
   section,
   children,
@@ -204,42 +230,39 @@ const Section = <T,>({
   if (!section.visible || !section.items.length) return null;
 
   return (
-    <section id={section.id} className="grid">
-      <h4 className="font-bold text-primary">{section.name}</h4>
+    <SectionContainer
+      sectionId={section.id}
+      sectionName={section.name}
+      sectionColumns={section.columns}
+    >
+      {section.items
+        .filter((item) => item.visible)
+        .map((item) => {
+          const url = (urlKey && get(item, urlKey)) as URL | undefined;
+          const level = (levelKey && get(item, levelKey, 0)) as number | undefined;
+          const summary = (summaryKey && get(item, summaryKey, "")) as string | undefined;
+          const keywords = (keywordsKey && get(item, keywordsKey, [])) as string[] | undefined;
 
-      <div
-        className="grid gap-x-6 gap-y-3"
-        style={{ gridTemplateColumns: `repeat(${section.columns}, 1fr)` }}
-      >
-        {section.items
-          .filter((item) => item.visible)
-          .map((item) => {
-            const url = (urlKey && get(item, urlKey)) as URL | undefined;
-            const level = (levelKey && get(item, levelKey, 0)) as number | undefined;
-            const summary = (summaryKey && get(item, summaryKey, "")) as string | undefined;
-            const keywords = (keywordsKey && get(item, keywordsKey, [])) as string[] | undefined;
-
-            return (
-              <div key={item.id} className={cn("space-y-2", className)}>
-                <div>
-                  {children?.(item as T)}
-                  {url !== undefined && <Link url={url} />}
-                </div>
-
-                {summary !== undefined && !isEmptyString(summary) && (
-                  <div className="wysiwyg" dangerouslySetInnerHTML={{ __html: summary }} />
-                )}
-
-                {level !== undefined && level > 0 && <Rating level={level} />}
-
-                {keywords !== undefined && keywords.length > 0 && (
-                  <p className="text-sm">{keywords.join(", ")}</p>
-                )}
+          return (
+            <div key={item.id} className={cn("space-y-2", className)}>
+              <div>
+                {children?.(item as T)}
+                {url !== undefined && <Link url={url} />}
               </div>
-            );
-          })}
-      </div>
-    </section>
+
+              {summary !== undefined && !isEmptyString(summary) && (
+                <div className="wysiwyg" dangerouslySetInnerHTML={{ __html: summary }} />
+              )}
+
+              {level !== undefined && level > 0 && <Rating level={level} />}
+
+              {keywords !== undefined && keywords.length > 0 && (
+                <p className="text-sm">{keywords.join(", ")}</p>
+              )}
+            </div>
+          );
+        })}
+    </SectionContainer>
   );
 };
 
@@ -355,19 +378,35 @@ const Certifications = () => {
 
 const Skills = () => {
   const section = useArtboardStore((state) => state.resume.sections.skills);
-  console.log("📢[onyx.tsx:358]: section: ", section);
-  // const skillsByGroup = getSkillsByGroup(section.items);
-  // console.log("📢[onyx.tsx:360]: skillsByGroup: ", skillsByGroup);
+  const skillsByGroup = getSkillsByGroup(section?.items || []);
+
+  if (!section.visible || !skillsByGroup.length) return null;
 
   return (
-    <Section<Skill> section={section}>
-      {(item) => (
-        <div>
-          <div className="font-bold">{item.name}</div>
-          <div>{item.description}</div>
+    <SectionContainer
+      sectionId={section.id}
+      sectionName={section.name}
+      sectionColumns={section.columns}
+    >
+      {skillsByGroup.map((group) => (
+        <div key={group.group}>
+          {group.group && <h5 className="font-bold text-primary">{group.group}</h5>}
+
+          <div className="grid gap-x-4 gap-y-1.5">
+            {group.skills.map((skill) => (
+              <div key={skill.id} className="flex items-center gap-x-2">
+                <div className="font-bold">{skill.name}</div>
+                <div>{skill.description}</div>
+                {skill.level > 0 && <Rating level={skill.level} />}
+                {skill.keywords.length > 0 && (
+                  <p className="text-sm">{skill.keywords.join(", ")}</p>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
-      )}
-    </Section>
+      ))}
+    </SectionContainer>
   );
 };
 
