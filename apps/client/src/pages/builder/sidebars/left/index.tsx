@@ -131,6 +131,7 @@ export const LeftSidebar = () => {
             id="languages"
             title={(item) => item.name}
             description={(item) => item.description}
+            group={(item) => (item?.level ? ` (${item.level})` : "")}
           />
           <Separator />
           <SectionBase<Award>

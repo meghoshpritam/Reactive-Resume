@@ -2,12 +2,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { t } from "@lingui/macro";
 import { defaultLanguage, languageSchema } from "@reactive-resume/schema";
 import {
+  Checkbox,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
   Input,
+  Label,
   Slider,
 } from "@reactive-resume/ui";
 import { useForm } from "react-hook-form";
@@ -83,6 +85,30 @@ export const LanguagesDialog = () => {
             </FormItem>
           )}
         />
+
+        <div className="mb-6 mt-4 grid grid-cols-1 gap-x-3 gap-y-4 sm:col-span-2 sm:grid-cols-3">
+          {["read", "write", "speak"].map((type) => (
+            <FormField
+              key={type}
+              name={type}
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="flex items-center ">
+                  <Checkbox
+                    id={`resume.languages.${type}`}
+                    checked={field.value}
+                    onCheckedChange={(checked) => {
+                      field.onChange({ target: { value: checked } });
+                    }}
+                  />
+                  <Label className="ml-2 capitalize" htmlFor={`resume.languages.${type}`}>
+                    {type}
+                  </Label>
+                </FormItem>
+              )}
+            />
+          ))}
+        </div>
       </div>
     </SectionDialog>
   );

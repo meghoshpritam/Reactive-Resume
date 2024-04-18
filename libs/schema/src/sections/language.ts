@@ -7,6 +7,9 @@ export const languageSchema = itemSchema.extend({
   name: z.string().min(1),
   description: z.string(),
   level: z.number().min(0).max(5).default(1),
+  read: z.boolean().optional(),
+  write: z.boolean().optional(),
+  speak: z.boolean().optional(),
 });
 
 // Type
@@ -18,4 +21,7 @@ export const defaultLanguage: Language = {
   name: "",
   description: "",
   level: 1,
+  read: false,
+  write: false,
+  speak: false,
 };
