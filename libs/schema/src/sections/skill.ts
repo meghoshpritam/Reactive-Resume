@@ -19,7 +19,7 @@ export const defaultSkill: Skill = {
   ...defaultItem,
   name: "",
   description: "",
-  level: 1,
+  level: 0,
   keywords: [],
   group: "",
 };

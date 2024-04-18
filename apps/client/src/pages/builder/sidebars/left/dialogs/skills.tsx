@@ -56,11 +56,11 @@ export const SkillsDialog = () => {
         />
 
         <FormField
-          name="description"
+          name="group"
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t`Description`}</FormLabel>
+              <FormLabel>{t`Skills Group`}</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
@@ -70,11 +70,11 @@ export const SkillsDialog = () => {
         />
 
         <FormField
-          name="group"
+          name="description"
           control={form.control}
           render={({ field }) => (
             <FormItem className="sm:col-span-2">
-              <FormLabel>{t`Skills Group`}</FormLabel>
+              <FormLabel>{t`Description`}</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>

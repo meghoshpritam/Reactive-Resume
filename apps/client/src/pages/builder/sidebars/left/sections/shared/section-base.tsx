@@ -33,9 +33,10 @@ type Props<T extends SectionItem> = {
   id: SectionKey;
   title: (item: T) => string;
   description?: (item: T) => string | undefined;
+  group?: (item: T) => string | undefined;
 };
 
-export const SectionBase = <T extends SectionItem>({ id, title, description }: Props<T>) => {
+export const SectionBase = <T extends SectionItem>({ id, title, description, group }: Props<T>) => {
   const { open } = useDialog(id);
 
   const setValue = useResumeStore((state) => state.setValue);
@@ -126,7 +127,7 @@ export const SectionBase = <T extends SectionItem>({ id, title, description }: P
                   id={item.id}
                   key={item.id}
                   visible={item.visible}
-                  title={title(item as T)}
+                  title={title(item as T) + group?.(item as T)}
                   description={description?.(item as T)}
                   onUpdate={() => onUpdate(item as T)}
                   onDelete={() => onDelete(item as T)}

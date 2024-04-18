@@ -379,6 +379,7 @@ const Certifications = () => {
 const Skills = () => {
   const section = useArtboardStore((state) => state.resume.sections.skills);
   const skillsByGroup = getSkillsByGroup(section?.items || []);
+  console.log("📢[onyx.tsx:382]: skillsByGroup: ", skillsByGroup);
 
   if (!section.visible || !skillsByGroup.length) return null;
 

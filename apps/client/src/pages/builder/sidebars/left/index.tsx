@@ -124,6 +124,7 @@ export const LeftSidebar = () => {
               if (item.description) return item.description;
               if (item.keywords.length > 0) return `${item.keywords.length} keywords`;
             }}
+            group={(item) => (item?.group ? ` (${item.group})` : "")}
           />
           <Separator />
           <SectionBase<Language>
