@@ -70,6 +70,20 @@ export const SkillsDialog = () => {
         />
 
         <FormField
+          name="group"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem className="sm:col-span-2">
+              <FormLabel>{t`Skills Group`}</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
           name="level"
           control={form.control}
           render={({ field }) => (

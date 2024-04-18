@@ -8,6 +8,7 @@ export const skillSchema = itemSchema.extend({
   description: z.string(),
   level: z.number().min(0).max(5).default(1),
   keywords: z.array(z.string()).default([]),
+  group: z.string().optional(),
 });
 
 // Type
@@ -20,4 +21,5 @@ export const defaultSkill: Skill = {
   description: "",
   level: 1,
   keywords: [],
+  group: "",
 };
