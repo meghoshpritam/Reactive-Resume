@@ -355,9 +355,12 @@ const Certifications = () => {
 
 const Skills = () => {
   const section = useArtboardStore((state) => state.resume.sections.skills);
+  console.log("📢[onyx.tsx:358]: section: ", section);
+  // const skillsByGroup = getSkillsByGroup(section.items);
+  // console.log("📢[onyx.tsx:360]: skillsByGroup: ", skillsByGroup);
 
   return (
-    <Section<Skill> section={section} levelKey="level" keywordsKey="keywords">
+    <Section<Skill> section={section}>
       {(item) => (
         <div>
           <div className="font-bold">{item.name}</div>
