@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { t } from "@lingui/macro";
+import { Label } from "@radix-ui/react-context-menu";
 import { defaultEducation, educationSchema } from "@reactive-resume/schema";
 import {
   FormControl,
@@ -9,7 +10,13 @@ import {
   FormMessage,
   Input,
   RichInput,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@reactive-resume/ui";
+import { educationTypes } from "@reactive-resume/utils";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -106,11 +113,41 @@ export const EducationDialog = () => {
           name="date"
           control={form.control}
           render={({ field }) => (
-            <FormItem className="sm:col-span-2">
+            <FormItem>
               <FormLabel>{t`Date or Date Range`}</FormLabel>
               <FormControl>
                 <Input {...field} placeholder={t`March 2023 - Present`} />
               </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          name="educationType"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <Label>{t`Education Type`}</Label>
+              <Select
+                value={field.value}
+                onValueChange={(value) => {
+                  field.onChange({ target: { value: value === "_default_" ? "" : value } });
+                }}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder={t`Education Type`} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="_default_">{t`None`}</SelectItem>
+                  {Object.entries(educationTypes).map(([key, value]) => (
+                    <SelectItem key={key} value={key}>
+                      {value}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
               <FormMessage />
             </FormItem>
           )}

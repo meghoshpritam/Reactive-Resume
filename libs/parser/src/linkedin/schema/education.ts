@@ -8,4 +8,5 @@ export const educationSchema = z.object({
   "Degree Name": z.string(),
   Activities: z.string(),
   location: z.string().optional(),
+  educationType: z.string().optional(),
 });

@@ -17,6 +17,8 @@ import {
 } from "@reactive-resume/schema";
 import {
   cn,
+  EducationTypes,
+  educationTypes,
   ExperienceJobTypes,
   experienceJobTypes,
   ExperienceWorkTypes,
@@ -310,13 +312,21 @@ const Education = () => {
   const section = useArtboardStore((state) => state.resume.sections.education);
 
   return (
-    <Section<Education> section={section} urlKey="url" summaryKey="summary">
+    <Section<Education> section={section} summaryKey="summary">
       {(item) => (
         <div className="flex items-start justify-between">
           <div className="text-left">
             <div className="font-bold">{item.institution}</div>
-            <div>{item.area}</div>
-            <div>{item.score}</div>
+            <div className="flex">{item.area}</div>
+            <div className="flex">
+              <span>{item.studyType}</span>
+              <span className="mx-1.5">|</span>
+              <span>{item.score}</span>
+              <span className="mx-1.5">|</span>
+              <span>{educationTypes[item.educationType as keyof EducationTypes]}</span>
+              <span className="mx-1.5">|</span>
+              <Link url={item.url} />
+            </div>
           </div>
 
           <div className="shrink-0 text-right">
@@ -326,7 +336,6 @@ const Education = () => {
                 <i className="ph ph-bold ph-map-pin text-primary" /> {item.location}
               </div>
             )}
-            <div>{item.studyType}</div>
           </div>
         </div>
       )}
@@ -379,7 +388,6 @@ const Certifications = () => {
 const Skills = () => {
   const section = useArtboardStore((state) => state.resume.sections.skills);
   const skillsByGroup = getSkillsByGroup(section?.items || []);
-  console.log("📢[onyx.tsx:382]: skillsByGroup: ", skillsByGroup);
 
   if (!section.visible || !skillsByGroup.length) return null;
 
@@ -391,9 +399,9 @@ const Skills = () => {
     >
       {skillsByGroup.map((group) => (
         <div key={group.group}>
-          {group.group && <h5 className="font-bold text-primary">{group.group}</h5>}
+          {group.group && <h5 className="mb-2 font-bold text-primary">{group.group}</h5>}
 
-          <div className="grid gap-x-4 gap-y-1.5">
+          <div className="grid grid-cols-3 gap-x-4 gap-y-1.5">
             {group.skills.map((skill) => (
               <div key={skill.id} className="flex items-center gap-x-2">
                 <div className="font-bold">{skill.name}</div>
