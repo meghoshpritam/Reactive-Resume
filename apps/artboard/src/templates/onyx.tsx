@@ -6,7 +6,6 @@ import {
   Education,
   Experience,
   Interest,
-  Language,
   Project,
   Publication,
   Reference,
@@ -478,16 +477,35 @@ const Volunteer = () => {
 
 const Languages = () => {
   const section = useArtboardStore((state) => state.resume.sections.languages);
+  console.log("📢[onyx.tsx:480]: section: ", section);
 
   return (
-    <Section<Language> section={section} levelKey="level">
-      {(item) => (
-        <div className="space-y-0.5">
-          <div className="font-bold">{item.name}</div>
-          <div>{item.description}</div>
-        </div>
-      )}
-    </Section>
+    <SectionContainer
+      sectionId={section.id}
+      sectionName={section.name}
+      sectionColumns={section.columns}
+    >
+      <div className="grid grid-cols-5 items-center gap-y-1">
+        <div className="border-b pb-0.5 font-bold">Languages</div>
+        <div className="border-b pb-0.5 font-bold">Proficiency</div>
+        <div className="border-b pb-0.5 font-bold">Speak</div>
+        <div className="border-b pb-0.5 font-bold">Read</div>
+        <div className="border-b pb-0.5 font-bold">Write</div>
+        {section.items.map((item) => {
+          if (!item.visible) return null;
+
+          return (
+            <>
+              <div className="font-semibold">{item.name}</div>
+              <div className="">{item.description}</div>
+              <div className="">{item.speak ? <i className="ph ph-seal-check"></i> : null}</div>
+              <div className="">{item.read ? <i className="ph ph-seal-check"></i> : null}</div>
+              <div className="">{item.write ? <i className="ph ph-seal-check"></i> : null}</div>
+            </>
+          );
+        })}
+      </div>
+    </SectionContainer>
   );
 };
 
