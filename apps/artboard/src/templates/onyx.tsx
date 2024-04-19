@@ -477,7 +477,6 @@ const Volunteer = () => {
 
 const Languages = () => {
   const section = useArtboardStore((state) => state.resume.sections.languages);
-  console.log("📢[onyx.tsx:480]: section: ", section);
 
   return (
     <SectionContainer
@@ -548,6 +547,8 @@ const References = () => {
 const Custom = ({ id }: { id: string }) => {
   const section = useArtboardStore((state) => state.resume.sections.custom[id]);
 
+  if (section.name.startsWith("profiles.")) return <SocialProfiles id={id} />;
+
   return (
     <Section<CustomSection>
       section={section}
@@ -569,6 +570,40 @@ const Custom = ({ id }: { id: string }) => {
         </div>
       )}
     </Section>
+  );
+};
+
+const SocialProfiles = ({ id }: { id: string }) => {
+  const section = useArtboardStore((state) => state.resume.sections.custom[id]);
+  const profiles = useArtboardStore((state) => state.resume.sections.profiles);
+  console.log("📢[onyx.tsx:579]: profiles: ", profiles);
+
+  if (!section.visible) return null;
+
+  return (
+    <SectionContainer
+      sectionId={section.id}
+      sectionName={section.name.split(".")[1]}
+      sectionColumns={section.columns}
+    >
+      {profiles.items
+        .filter((item) => item.visible)
+        .map((item) => (
+          <div key={item.id} className="mt-2">
+            <div className="flex items-center">
+              <img
+                className="ph mr-2"
+                width={16}
+                height={16}
+                alt={item.network}
+                src={`https://cdn.simpleicons.org/${item.icon}`}
+              />
+              <p>{item.network}</p>
+            </div>
+            <Link url={item.url} className="ml-2 mt-1.5 text-sm" />
+          </div>
+        ))}
+    </SectionContainer>
   );
 };
 
@@ -607,6 +642,8 @@ const mapSectionToComponent = (section: SectionKey) => {
 
 export const Onyx = ({ columns, isFirstPage = false }: TemplateProps) => {
   const [main, sidebar] = columns;
+  console.log("📢[onyx.tsx:650]: main: ", main);
+  console.log("📢[onyx.tsx:650]: sidebar: ", sidebar);
 
   return (
     <div className="p-custom space-y-4">
