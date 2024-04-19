@@ -269,14 +269,21 @@ const Section = <T,>({
     >
       {section.items
         .filter((item) => item.visible)
-        .map((item) => {
+        .map((item: any) => {
           const url = (urlKey && get(item, urlKey)) as URL | undefined;
           const level = (levelKey && get(item, levelKey, 0)) as number | undefined;
           const summary = (summaryKey && get(item, summaryKey, "")) as string | undefined;
           const keywords = (keywordsKey && get(item, keywordsKey, [])) as string[] | undefined;
 
           return (
-            <div key={item.id} className={cn("space-y-2", className)}>
+            <div
+              key={item.id}
+              className={cn(
+                "space-y-2",
+                item.showBorder ? DEFAULT_BORDER_CLASS_NAME : "",
+                className,
+              )}
+            >
               <div>
                 {children?.(item as T)}
                 {url !== undefined && <Link url={url} />}
@@ -303,9 +310,15 @@ const Experience = () => {
 
   return (
     <Section<Experience>
-      section={section}
+      section={{
+        ...section,
+        items: section.items.map((item, index) => ({
+          ...item,
+          showBorder: index !== section.items.length - 1,
+        })),
+      }}
       summaryKey="summary"
-      className={twMerge("mb-2 last:border-none ", DEFAULT_BORDER_CLASS_NAME)}
+      className={twMerge("mb-2")}
     >
       {(item) => (
         <div className="flex items-start justify-between">
@@ -351,18 +364,13 @@ const Education = () => {
         ...section,
         items: section.items.map((item, index) => ({
           ...item,
-          isLast: index === section.items.length - 1,
+          showBorder: index !== section.items.length - 1,
         })),
       }}
       summaryKey="summary"
     >
-      {(item) => (
-        <div
-          className={twMerge(
-            "flex items-start justify-between pb-1.5",
-            item.isLast ? "" : DEFAULT_BORDER_CLASS_NAME,
-          )}
-        >
+      {(item: any) => (
+        <div className="flex items-start justify-between pb-1.5">
           <div className="text-left">
             <SectionPrimaryHeading>{item.area}</SectionPrimaryHeading>
             <SectionSecondaryHeading>{item.institution}</SectionSecondaryHeading>
@@ -448,18 +456,21 @@ const Skills = () => {
   if (!section.visible || !skillsByGroup.length) return null;
 
   return (
-    <SectionContainer
-      sectionId={section.id}
-      sectionName={section.name}
-      sectionColumns={section.columns}
-    >
+    <SectionContainer sectionId={section.id} sectionName={section.name} sectionColumns={1}>
       {skillsByGroup.map((group) => (
-        <div key={group.group}>
-          {group.group && <h5 className="mb-2 font-bold text-primary">{group.group}</h5>}
+        <div key={group.group} className="mt-2">
+          {group.group && (
+            <SectionPrimaryHeading className="mb-1.5 text-primary">
+              {group.group}
+            </SectionPrimaryHeading>
+          )}
 
-          <div className="grid grid-cols-3 gap-x-4 gap-y-1.5">
+          <div className="flex flex-wrap gap-x-4 gap-y-2.5 text-sm">
             {group.skills.map((skill) => (
-              <div key={skill.id} className="flex items-center gap-x-2">
+              <div
+                key={skill.id}
+                className="flex shrink-0 items-center gap-x-2 rounded-sm border border-gray-500 px-2.5 py-0.5"
+              >
                 <div className="font-bold">{skill.name}</div>
                 <div>{skill.description}</div>
                 {skill.level > 0 && <Rating level={skill.level} />}
@@ -604,7 +615,13 @@ const Custom = ({ id }: { id: string }) => {
 
   return (
     <Section<CustomSection>
-      section={section}
+      section={{
+        ...section,
+        items: section.items.map((item, index) => ({
+          ...item,
+          showBorder: index !== section.items.length - 1,
+        })),
+      }}
       urlKey="url"
       summaryKey="summary"
       keywordsKey="keywords"
