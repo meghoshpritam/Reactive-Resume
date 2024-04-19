@@ -494,13 +494,13 @@ const Languages = () => {
           if (!item.visible) return null;
 
           return (
-            <>
+            <Fragment key={item.name}>
               <div className="font-semibold">{item.name}</div>
               <div className="">{item.description}</div>
               <div className="">{item.speak ? <i className="ph ph-seal-check"></i> : null}</div>
               <div className="">{item.read ? <i className="ph ph-seal-check"></i> : null}</div>
               <div className="">{item.write ? <i className="ph ph-seal-check"></i> : null}</div>
-            </>
+            </Fragment>
           );
         })}
       </div>
@@ -576,7 +576,6 @@ const Custom = ({ id }: { id: string }) => {
 const SocialProfiles = ({ id }: { id: string }) => {
   const section = useArtboardStore((state) => state.resume.sections.custom[id]);
   const profiles = useArtboardStore((state) => state.resume.sections.profiles);
-  console.log("📢[onyx.tsx:579]: profiles: ", profiles);
 
   if (!section.visible) return null;
 
@@ -642,8 +641,6 @@ const mapSectionToComponent = (section: SectionKey) => {
 
 export const Onyx = ({ columns, isFirstPage = false }: TemplateProps) => {
   const [main, sidebar] = columns;
-  console.log("📢[onyx.tsx:650]: main: ", main);
-  console.log("📢[onyx.tsx:650]: sidebar: ", sidebar);
 
   return (
     <div className="p-custom space-y-4">
