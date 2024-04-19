@@ -34,6 +34,8 @@ import { Picture } from "../components/picture";
 import { useArtboardStore } from "../store/artboard";
 import { TemplateProps } from "../types/template";
 
+const DEFAULT_BORDER_CLASS_NAME = "border-b border-gray-500 border-dashed";
+
 const Header = () => {
   const basics = useArtboardStore((state) => state.resume.basics);
   const profiles = useArtboardStore((state) => state.resume.sections.profiles);
@@ -201,6 +203,7 @@ type SectionContainerProps = {
   sectionId: string;
   sectionName: string;
   sectionColumns: number;
+  className?: string;
 };
 
 const SectionContainer = ({
@@ -208,9 +211,10 @@ const SectionContainer = ({
   children,
   sectionName,
   sectionColumns,
+  className = "",
 }: SectionContainerProps) => {
   return (
-    <section id={sectionId} className="grid">
+    <section id={sectionId} className={twMerge("grid", className)}>
       <h4 className="mb-2 w-full border-b-2 border-secondary text-xl font-bold uppercase text-secondary">
         {sectionName}
       </h4>
@@ -261,6 +265,7 @@ const Section = <T,>({
       sectionId={section.id}
       sectionName={section.name}
       sectionColumns={section.columns}
+      className={className}
     >
       {section.items
         .filter((item) => item.visible)
@@ -297,7 +302,11 @@ const Experience = () => {
   const section = useArtboardStore((state) => state.resume.sections.experience);
 
   return (
-    <Section<Experience> section={section} summaryKey="summary">
+    <Section<Experience>
+      section={section}
+      summaryKey="summary"
+      className={twMerge("mb-2 last:border-none ", DEFAULT_BORDER_CLASS_NAME)}
+    >
       {(item) => (
         <div className="flex items-start justify-between">
           <div className="text-left">
@@ -337,9 +346,23 @@ const Education = () => {
   const section = useArtboardStore((state) => state.resume.sections.education);
 
   return (
-    <Section<Education> section={section} summaryKey="summary">
+    <Section<Education>
+      section={{
+        ...section,
+        items: section.items.map((item, index) => ({
+          ...item,
+          isLast: index === section.items.length - 1,
+        })),
+      }}
+      summaryKey="summary"
+    >
       {(item) => (
-        <div className="flex items-start justify-between">
+        <div
+          className={twMerge(
+            "flex items-start justify-between pb-1.5",
+            item.isLast ? "" : DEFAULT_BORDER_CLASS_NAME,
+          )}
+        >
           <div className="text-left">
             <SectionPrimaryHeading>{item.area}</SectionPrimaryHeading>
             <SectionSecondaryHeading>{item.institution}</SectionSecondaryHeading>
