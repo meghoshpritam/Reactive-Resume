@@ -28,6 +28,7 @@ import {
 } from "@reactive-resume/utils";
 import get from "lodash.get";
 import React, { Fragment } from "react";
+import { twMerge } from "tailwind-merge";
 
 import { Picture } from "../components/picture";
 import { useArtboardStore } from "../store/artboard";
@@ -39,11 +40,11 @@ const Header = () => {
   const fontSize = useArtboardStore((state) => state.resume.metadata.typography.font.size);
 
   return (
-    <div className="flex items-center justify-between space-x-4 border-b border-primary pb-5">
+    <div className="flex items-center justify-between space-x-4 pb-0">
       <div className="flex-1 space-y-2">
         <div>
-          <div className="text-3xl font-bold">{basics.name}</div>
-          <div className="text-lg text-primary">{basics.headline}</div>
+          <div className="text-3xl font-bold uppercase">{basics.name}</div>
+          <div className="mt-1 text-lg text-primary">{basics.headline}</div>
         </div>
 
         <div className="grid grid-cols-2 items-center gap-x-5 gap-y-1.5 text-sm">
@@ -133,15 +134,17 @@ const Summary = () => {
   if (!section.visible || isEmptyString(section.content)) return null;
 
   return (
-    <section id={section.id}>
-      <h4 className="font-bold text-primary">{section.name}</h4>
-
+    <SectionContainer
+      sectionId={section.id}
+      sectionName={section.name}
+      sectionColumns={section.columns}
+    >
       <div
         className="wysiwyg"
         style={{ columns: section.columns }}
         dangerouslySetInnerHTML={{ __html: section.content }}
       />
-    </section>
+    </SectionContainer>
   );
 };
 
@@ -208,7 +211,9 @@ const SectionContainer = ({
 }: SectionContainerProps) => {
   return (
     <section id={sectionId} className="grid">
-      <h4 className="font-bold text-primary">{sectionName}</h4>
+      <h4 className="mb-2 w-full border-b-2 border-secondary text-xl font-bold uppercase text-secondary">
+        {sectionName}
+      </h4>
 
       <div
         className="grid gap-x-6 gap-y-3"
@@ -219,6 +224,27 @@ const SectionContainer = ({
     </section>
   );
 };
+
+const SectionPrimaryHeading = ({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => {
+  return <h5 className={twMerge("text-17 font-bold", className)}>{children}</h5>;
+};
+
+const SectionSecondaryHeading = ({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => {
+  return <p className={twMerge("text-15 font-bold text-primary", className)}>{children}</p>;
+};
+
 const Section = <T,>({
   section,
   children,
@@ -275,8 +301,8 @@ const Experience = () => {
       {(item) => (
         <div className="flex items-start justify-between">
           <div className="text-left">
-            <div className="font-bold">{item.position}</div>
-            <div>{item.company}</div>
+            <SectionPrimaryHeading>{item.position}</SectionPrimaryHeading>
+            <SectionSecondaryHeading>{item.company}</SectionSecondaryHeading>
             <div className="mt-1 flex items-center text-sm">
               {item.jobType && (
                 <div>{experienceJobTypes[item.jobType as keyof ExperienceJobTypes]}</div>
@@ -293,10 +319,10 @@ const Experience = () => {
             </div>
           </div>
 
-          <div className="shrink-0 text-right">
+          <div className="text-15 shrink-0 text-right">
             <div className="mb-1 font-bold">{item.date}</div>
             {item.location && (
-              <div>
+              <div className="">
                 <i className="ph ph-bold ph-map-pin text-primary" /> {item.location}
               </div>
             )}
@@ -315,21 +341,25 @@ const Education = () => {
       {(item) => (
         <div className="flex items-start justify-between">
           <div className="text-left">
-            <div className="font-bold">{item.institution}</div>
-            <div className="flex">{item.area}</div>
-            <div className="flex">
+            <SectionPrimaryHeading>{item.area}</SectionPrimaryHeading>
+            <SectionSecondaryHeading>{item.institution}</SectionSecondaryHeading>
+            <div className="mt-1 flex text-sm">
               <span>{item.studyType}</span>
               <span className="mx-1.5">|</span>
-              <span>{item.score}</span>
-              <span className="mx-1.5">|</span>
+              {item.score && (
+                <>
+                  <span>{item.score}</span>
+                  <span className="mx-1.5">|</span>
+                </>
+              )}
               <span>{educationTypes[item.educationType as keyof EducationTypes]}</span>
               <span className="mx-1.5">|</span>
               <Link url={item.url} />
             </div>
           </div>
 
-          <div className="shrink-0 text-right">
-            <div className="font-bold">{item.date}</div>
+          <div className="text-15 shrink-0 text-right">
+            <div className="mb-1 font-bold">{item.date}</div>
             {item.location && (
               <div>
                 <i className="ph ph-bold ph-map-pin text-primary" /> {item.location}
@@ -371,15 +401,15 @@ const Certifications = () => {
       {(item) => (
         <div className="flex items-start justify-between">
           <div className="text-left">
-            <div className="font-bold">{item.name}</div>
+            <SectionPrimaryHeading>{item.name}</SectionPrimaryHeading>
             <div className="flex">
-              <span>{item.issuer}</span>
+              <SectionSecondaryHeading>{item.issuer}</SectionSecondaryHeading>
               {item.issuer && item.url && <span className="mx-1.5">|</span>}
-              <Link url={item.url} />
+              <Link url={item.url} className="text-sm" />
             </div>
           </div>
 
-          <div className="shrink-0 text-right">
+          <div className="text-15 shrink-0 text-right">
             <div className="font-bold">{item.date}</div>
           </div>
         </div>
@@ -559,7 +589,7 @@ const Custom = ({ id }: { id: string }) => {
       {(item) => (
         <div className="flex items-start justify-between">
           <div className="text-left">
-            <div className="font-bold">{item.name}</div>
+            <SectionPrimaryHeading>{item.name}</SectionPrimaryHeading>
             <div>{item.description}</div>
           </div>
 
