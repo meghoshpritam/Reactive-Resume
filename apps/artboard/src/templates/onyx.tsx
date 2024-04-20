@@ -45,8 +45,8 @@ const Header = () => {
     <div className="flex items-center justify-between space-x-4 pb-0">
       <div className="flex-1 space-y-2">
         <div>
-          <div className="text-3xl font-bold uppercase">{basics.name}</div>
-          <div className="mt-1 text-lg text-primary">{basics.headline}</div>
+          <div className="text-32 font-bld uppercase">{basics.name}</div>
+          <div className="text-20 mt-1 text-primary">{basics.headline}</div>
         </div>
 
         <div className="grid grid-cols-2 items-center gap-x-5 gap-y-1.5 text-sm">
@@ -215,7 +215,7 @@ const SectionContainer = ({
 }: SectionContainerProps) => {
   return (
     <section id={sectionId} className={twMerge("grid", className)}>
-      <h4 className="mb-2 w-full border-b-2 border-secondary text-xl font-bold uppercase text-secondary">
+      <h4 className="mb-2 w-full border-b-2 border-secondary text-2xl font-bold uppercase text-secondary">
         {sectionName}
       </h4>
 

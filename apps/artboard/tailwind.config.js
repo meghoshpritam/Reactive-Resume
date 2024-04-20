@@ -28,6 +28,10 @@ module.exports = {
         26: "1.625rem",
         28: "1.75rem",
         30: "1.875rem",
+        31: "1.9375rem",
+        32: "2rem",
+        33: "2.0625rem",
+        34: "2.125rem",
       },
       lineHeight: {
         tight: "calc(var(--line-height) - 0.5)",
