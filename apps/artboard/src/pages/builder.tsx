@@ -12,7 +12,6 @@ export const BuilderLayout = () => {
   const transformRef = useRef<ReactZoomPanPinchRef>(null);
   const format = useArtboardStore((state) => state.resume.metadata.page.format);
   const layout = useArtboardStore((state) => state.resume.metadata.layout);
-  console.log("📢[builder.tsx:15]: layout: ", layout);
   const template = useArtboardStore((state) => state.resume.metadata.template as Template);
 
   const Template = useMemo(() => getTemplate(template), [template]);

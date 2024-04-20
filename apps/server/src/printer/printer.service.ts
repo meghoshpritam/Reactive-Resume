@@ -124,6 +124,14 @@ export class PrinterService {
       await page.goto(`${url}/artboard/preview`, { waitUntil: "networkidle0" });
 
       const pagesBuffer: Buffer[] = [];
+      const pageHeights: number[] = [];
+
+      const updatePageHeights = async (index: number) => {
+        const pageElement = await page.$(`[data-page="${index}"]`);
+        const height = (await (await pageElement?.getProperty("scrollHeight"))?.jsonValue()) ?? 0;
+
+        pageHeights.push(height);
+      };
 
       const processPage = async (index: number) => {
         const pageElement = await page.$(`[data-page="${index}"]`);
@@ -137,7 +145,9 @@ export class PrinterService {
           return tempHtml;
         }, pageElement);
 
-        pagesBuffer.push(await page.pdf({ width, height, printBackground: true }));
+        pagesBuffer.push(
+          await page.pdf({ width, height: Math.max(...pageHeights), printBackground: true }),
+        );
 
         await page.evaluate((tempHtml: string) => {
           document.body.innerHTML = tempHtml;
@@ -145,6 +155,10 @@ export class PrinterService {
       };
 
       // Loop through all the pages and print them, by first displaying them, printing the PDF and then hiding them back
+      for (let index = 1; index <= numPages; index++) {
+        await updatePageHeights(index);
+      }
+
       for (let index = 1; index <= numPages; index++) {
         await processPage(index);
       }
