@@ -45,8 +45,8 @@ const Header = () => {
     <div className="flex items-center justify-between space-x-4 pb-0">
       <div className="flex-1 space-y-2">
         <div>
-          <div className="text-32 font-bld uppercase">{basics.name}</div>
-          <div className="text-20 mt-1 text-primary">{basics.headline}</div>
+          <div className="text-32 font-bold uppercase">{basics.name}</div>
+          <div className="text-20 mt-1 font-semibold text-primary">{basics.headline}</div>
         </div>
 
         <div className="grid grid-cols-2 items-center gap-x-5 gap-y-1.5 text-sm">
@@ -713,7 +713,7 @@ export const Onyx = ({ columns, isFirstPage = false }: TemplateProps) => {
   const [main, sidebar] = columns;
 
   return (
-    <div className="p-custom space-y-6">
+    <div className="p-custom text-text space-y-6">
       {isFirstPage && <Header />}
 
       {main.map((section) => (
