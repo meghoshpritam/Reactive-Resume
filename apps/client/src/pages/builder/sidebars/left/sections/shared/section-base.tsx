@@ -127,7 +127,7 @@ export const SectionBase = <T extends SectionItem>({ id, title, description, gro
                   id={item.id}
                   key={item.id}
                   visible={item.visible}
-                  title={title(item as T) + group?.(item as T)}
+                  title={title(item as T) + (group?.(item as T) || "")}
                   description={description?.(item as T)}
                   onUpdate={() => onUpdate(item as T)}
                   onDelete={() => onDelete(item as T)}
