@@ -220,7 +220,7 @@ const SectionContainer = ({
       </h4>
 
       <div
-        className="grid gap-x-6 gap-y-3"
+        className="grid gap-x-8 gap-y-4"
         style={{ gridTemplateColumns: `repeat(${sectionColumns}, 1fr)` }}
       >
         {children}
@@ -428,13 +428,27 @@ const Certifications = () => {
   const section = useArtboardStore((state) => state.resume.sections.certifications);
 
   return (
-    <Section<Certification> section={section} summaryKey="summary">
-      {(item) => (
-        <div className="flex items-start justify-between">
+    <Section<Certification>
+      section={{
+        ...section,
+        items: section.items.map((item, index) => ({
+          ...item,
+          showBorder: index !== section.items.length - 1,
+        })),
+      }}
+      summaryKey="summary"
+    >
+      {(item: any) => (
+        <div
+          className={cn(
+            "flex items-start justify-between",
+            item.showBorder ? DEFAULT_BORDER_CLASS_NAME + " pb-2 last:pb-0 last:border-none" : "",
+          )}
+        >
           <div className="text-left">
             <SectionPrimaryHeading>{item.name}</SectionPrimaryHeading>
             <div className="flex">
-              <SectionSecondaryHeading>{item.issuer}</SectionSecondaryHeading>
+              <SectionSecondaryHeading className="shrink-0">{item.issuer}</SectionSecondaryHeading>
               {item.issuer && item.url && <span className="mx-1.5">|</span>}
               <Link url={item.url} className="text-sm" />
             </div>
