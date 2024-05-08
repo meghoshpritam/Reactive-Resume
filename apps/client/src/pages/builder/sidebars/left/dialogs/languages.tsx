@@ -90,13 +90,23 @@ export const LanguagesDialog = () => {
           {["read", "write", "speak"].map((type) => (
             <FormField
               key={type}
-              name={type}
+              name={
+                type as
+                  | "id"
+                  | "visible"
+                  | "name"
+                  | "description"
+                  | "level"
+                  | "read"
+                  | "write"
+                  | "speak"
+              }
               control={form.control}
               render={({ field }) => (
                 <FormItem className="flex items-center ">
                   <Checkbox
                     id={`resume.languages.${type}`}
-                    checked={field.value}
+                    checked={Boolean(field.value)}
                     onCheckedChange={(checked) => {
                       field.onChange({ target: { value: checked } });
                     }}
