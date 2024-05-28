@@ -306,12 +306,16 @@ const Certifications = () => {
   const section = useArtboardStore((state) => state.resume.sections.certifications);
 
   return (
-    <Section<Certification> section={section} urlKey="url" summaryKey="summary">
+    <Section<Certification> section={section} summaryKey="summary">
       {(item) => (
         <div className="flex items-start justify-between group-[.sidebar]:flex-col group-[.sidebar]:items-start">
           <div className="text-left">
             <div className="font-bold">{item.name}</div>
-            <div>{item.issuer}</div>
+            <div className="flex">
+              <div className="shrink-0">{item.issuer}</div>
+              {item.issuer && item.url && <span className="mx-1.5">|</span>}
+              <Link url={item.url} className="text-sm" />
+            </div>
           </div>
 
           <div className="shrink-0 text-right group-[.sidebar]:text-left">
