@@ -166,7 +166,16 @@ const Section = <T,>({
             const keywords = (keywordsKey && get(item, keywordsKey, [])) as string[] | undefined;
 
             return (
-              <div key={item.id} className={cn("space-y-2", className)}>
+              <div
+                key={item.id}
+                className={cn(
+                  "space-y-2",
+                  ["skills", "experience", "education", "certifications"].includes(section.id)
+                    ? "border-b border-dotted pb-1 last:border-none last:pb-0"
+                    : "",
+                  className,
+                )}
+              >
                 <div>
                   {children?.(item as T)}
                   {url !== undefined && <Link url={url} />}
@@ -179,7 +188,13 @@ const Section = <T,>({
                 {level !== undefined && level > 0 && <Rating level={level} />}
 
                 {keywords !== undefined && keywords.length > 0 && (
-                  <p className="text-sm">{keywords.join(", ")}</p>
+                  <p className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
+                    {keywords.map((keyword) => (
+                      <span key={keyword} className="col-span-1 font-semibold">
+                        {keyword}
+                      </span>
+                    ))}
+                  </p>
                 )}
               </div>
             );
@@ -493,10 +508,10 @@ export const Gengar = ({ columns, isFirstPage = false }: TemplateProps) => {
   const primaryColor = useArtboardStore((state) => state.resume.metadata.theme.primary);
 
   return (
-    <div className="grid min-h-[inherit] grid-cols-3">
+    <div className="grid min-h-[inherit] grid-cols-8">
       <div
         className={cn(
-          "sidebar group flex flex-col",
+          "sidebar group col-span-3 flex flex-col",
           !(isFirstPage || sidebar.length > 0) && "hidden",
         )}
       >
@@ -512,7 +527,7 @@ export const Gengar = ({ columns, isFirstPage = false }: TemplateProps) => {
         </div>
       </div>
 
-      <div className="main group col-span-2">
+      <div className="main group col-span-5">
         {isFirstPage && (
           <div
             className="p-custom space-y-4"
