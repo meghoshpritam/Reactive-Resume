@@ -416,15 +416,17 @@ const Projects = () => {
   return (
     <Section<Project> section={section} urlKey="url" summaryKey="summary" keywordsKey="keywords">
       {(item) => (
-        <div className="flex items-start justify-between group-[.sidebar]:flex-col group-[.sidebar]:items-start">
-          <div className="text-left">
-            <div className="font-bold">{item.name}</div>
-            <div>{item.description}</div>
-          </div>
+        <div>
+          <div className="flex items-start justify-between group-[.sidebar]:flex-col group-[.sidebar]:items-start">
+            <div className="text-left">
+              <div className="font-bold">{item.name}</div>
+            </div>
 
-          <div className="shrink-0 text-right group-[.sidebar]:text-left">
-            <div className="font-bold">{item.date}</div>
+            <div className="shrink-0 text-right group-[.sidebar]:text-left">
+              <div className="font-bold">{item.date}</div>
+            </div>
           </div>
+          <div className="text-sm">{item.description}</div>
         </div>
       )}
     </Section>
